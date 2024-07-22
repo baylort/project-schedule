@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Upload Excel File</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload Excel File</h1>
+      <div class="upload-area" id="uploadfile">
+        <h2>Drag & Drop Files Here</h2>
+        <p>or</p>
+        <input type="file" id="fileInput" name="file">
+        <button id="uploadButton">Upload</button>
+      </div>
+    </div>
+    <form id="uploadForm" method="post" enctype="multipart/form-data" style="display:none;">
+      <input type="file" name="file" id="hiddenFileInput">
+    </form>
+
+    <script>
+      const uploadArea = document.getElementById('uploadfile');
+      const fileInput = document.getElementById('fileInput');
+      const hiddenFileInput = document.getElementById('hiddenFileInput');
+      const uploadForm = document.getElementById('uploadForm');
+      const uploadButton = document.getElementById('uploadButton');
+
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragging');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragging');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragging');
+        const files = e.dataTransfer.files;
+        hiddenFileInput.files = files;
+        uploadForm.submit();
+      });
+
+      fileInput.addEventListener('change', () => {
+        hiddenFileInput.files = fileInput.files;
+        uploadForm.submit();
+      });
+
+      uploadButton.addEventListener('click', () => {
+        fileInput.click();
+      });
+    </script>
+  </body>
+</html>
+
+
